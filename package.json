@@ -1,0 +1,15 @@
+{
+  "name": "watchtower",
+  "version": "1.0.0",
+  "description": "simple node authenticator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ttran",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "passport": "^0.4.0"
+  }
+}
