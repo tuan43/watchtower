@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const helmet = require('helmet');
 const fs = require('fs');
 const https = require('https');
+const http = require('http');
 
 const app = express();
 const authUser = {
@@ -14,7 +15,6 @@ const authUser = {
   hashedPassword: '$2b$10$0kdaeo/a9T.cXEvppsl8oO6S0b3a2fuHgZL.7zb3EdxCrGS3OVrLq',
   authKey: '1529 6939'
 };
-const PORT = 3000;
 
 app.use(helmet());
 app.use(secure);
@@ -49,6 +49,11 @@ const httpsOptions = {
   cert: fs.readFileSync('./certs/cert.pem')
 };
 
-const server = https.createServer(httpsOptions, app).listen(PORT, () => {
-  console.log('Watch Tower running at ' + PORT)
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
+
+const server = https.createServer(httpsOptions, app).listen(443, () => {
+  console.log('Watch Tower running at ' + 443)
 });
