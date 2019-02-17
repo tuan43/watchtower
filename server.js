@@ -1,9 +1,10 @@
 const express = require('express');
-var secure = require('express-force-https');
+const secure = require('express-force-https');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
+const helmet = require('helmet');
 
 const app = express();
 const port = 3000;
@@ -13,6 +14,7 @@ const authUser = {
   hashedPassword: '$2b$10$0kdaeo/a9T.cXEvppsl8oO6S0b3a2fuHgZL.7zb3EdxCrGS3OVrLq'
 };
 
+app.use(helmet());
 app.use(secure);
 app.use(express.static('build'));
 app.use(bodyParser.urlencoded({ extended: false }));
