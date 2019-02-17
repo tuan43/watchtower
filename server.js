@@ -5,14 +5,16 @@ const LocalStrategy = require('passport-local');
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 const helmet = require('helmet');
+const fs = require('fs');
+const https = require('https');
 
 const app = express();
-const port = 3000;
-
 const authUser = {
   username: 'tuan43',
-  hashedPassword: '$2b$10$0kdaeo/a9T.cXEvppsl8oO6S0b3a2fuHgZL.7zb3EdxCrGS3OVrLq'
+  hashedPassword: '$2b$10$0kdaeo/a9T.cXEvppsl8oO6S0b3a2fuHgZL.7zb3EdxCrGS3OVrLq',
+  authKey: '1529 6939'
 };
+const PORT = 3000;
 
 app.use(helmet());
 app.use(secure);
@@ -39,7 +41,14 @@ passport.use(new LocalStrategy(
 app.post('/login', 
   passport.authenticate('local', { session: false, failureRedirect: '/' }), 
   function(req, res) {
-    res.json({ authKey: '1529 6939' });
+    res.json({ authKey: authUser.authKey });
   });
 
-app.listen(port, () => console.log(`Watchtower listening on port ${port}!`));
+const httpsOptions = {
+  key: fs.readFileSync('./certs/key.pem'),
+  cert: fs.readFileSync('./certs/cert.pem')
+};
+
+const server = https.createServer(httpsOptions, app).listen(PORT, () => {
+  console.log('Watch Tower running at ' + PORT)
+});
