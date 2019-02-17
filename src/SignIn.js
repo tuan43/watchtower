@@ -56,7 +56,7 @@ function SignIn(props) {
         <Typography component="h1" variant="h5">
           Watch Tower
         </Typography>
-        <form className={classes.form}>
+        <form className={classes.form} action='/login' method='post'>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="username">Username</InputLabel>
             <Input id="username" name="username" autoComplete="username" autoFocus />
