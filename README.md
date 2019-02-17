@@ -15,3 +15,7 @@ You will also see any lint errors in the console.
 ### `npm run build`
 
 Builds the app for production to the `build` folder.
+
+### `node server.js`
+
+Runs the production app.
