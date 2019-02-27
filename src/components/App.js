@@ -1,9 +1,9 @@
 import React from 'react';
 
-import SignIn from './SignIn';
+import Main from './Main';
 
 const App = () => (
-  <SignIn />
+  <Main />
 );
 
 export default App;
