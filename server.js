@@ -1,8 +1,8 @@
-const express = require('express');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 const helmet = require('helmet');
 const fs = require('fs');
@@ -11,19 +11,10 @@ const FileStore = require('session-file-store')(session);
 const https = require('https');
 const uuid = require('uuid/v4');
 const _ = require('lodash');
-
+const speakeasy = require('speakeasy');
 const app = express();
-const users = [{
-  username: 'tuan43',
-  id: '6528169bf9e5',
-  hashedPassword: '$2b$10$0kdaeo/a9T.cXEvppsl8oO6S0b3a2fuHgZL.7zb3EdxCrGS3OVrLq',
-  authKey: '1529 6939'
-}, {
-  username: 'sbui',
-  id: 'f0db19960850',
-  hashedPassword: '$2b$10$90SPNdBml3GHcJJG7C9rA.5HGUJS5otRDucInmnDYDVpfPPSNFRu.',
-  authKey: 'I love my mochi! :)'
-}];
+
+const users = require('./users.js');
 
 app.use(helmet());
 app.use(express.static('build'));
@@ -44,15 +35,24 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(
-  function(username, password, done) {
+  { passReqToCallback: true },
+  function(req, username, password, done) {
     const authUser = _.find(users, { username: username });
 
     if (!authUser) {
       return done(null, false, { message: 'Incorrect username/password.'});
     }
 
+    const tokenVerified = speakeasy.totp.verify({
+      secret: authUser.secret,
+      encoding: 'base32',
+      token: req.body.token
+    });
+
+    const bypassVerified = authUser.bypass === req.body.token;
+
     bcrypt.compare(password, authUser.hashedPassword, function(err, res) {
-      if (res) {
+      if (res && (tokenVerified || bypassVerified)) {
         return done(null, authUser);
       } else {
         return done(null, false, { message: 'Incorrect username/password.'});
@@ -75,11 +75,11 @@ app.post('/login', (req, res, next) => {
     console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
     console.log(`req.user: ${JSON.stringify(req.user)}`)
     req.login(user, (err) => {
-        if(req.isAuthenticated()) {
-          res.redirect('/authenticated');
-        } else {
-          res.redirect('/');
-        }
+      if(req.isAuthenticated()) {
+        res.redirect('/authenticated');
+      } else {
+        res.redirect('/');
+      }
     })
   })(req, res, next);
 })

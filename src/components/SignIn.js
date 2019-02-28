@@ -53,23 +53,27 @@ function SignIn(props) {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component='h1' variant='h5'>
           Watch Tower
         </Typography>
         <form className={classes.form} action='/login' method='post'>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="username">Username</InputLabel>
-            <Input id="username" name="username" autoComplete="username" autoFocus />
+          <FormControl margin='normal' required fullWidth>
+            <InputLabel htmlFor='username'>Username</InputLabel>
+            <Input id='username' name='username' autoComplete='username' autoFocus />
           </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input name="password" type="password" id="password" autoComplete="current-password" />
+          <FormControl margin='normal' required fullWidth>
+            <InputLabel htmlFor='token'>Token</InputLabel>
+            <Input name='token' id='token' />
+          </FormControl>
+          <FormControl margin='normal' required fullWidth>
+            <InputLabel htmlFor='password'>Password</InputLabel>
+            <Input name='password' type='password' id='password' autoComplete='current-password' />
           </FormControl>
           <Button
-            type="submit"
+            type='submit'
             fullWidth
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             className={classes.submit}
           >
             Sign in
