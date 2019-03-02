@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,7 +12,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { withRouter } from "react-router";
 
 import styles from './SignInStyles';
 
@@ -23,6 +24,10 @@ class SignIn extends Component {
       password: '',
       token: ''
     };
+  }
+
+  componentDidMount() {
+
   }
 
   auth = (e) => {
@@ -46,6 +51,9 @@ class SignIn extends Component {
     }).then(res => res.json())
       .then(res => {
         localStorage.setItem('token', res.token);
+        setTimeout(() => {
+          history.push('/logout');
+        }, 300000);
         history.push('/home');
       })
       .catch(console.error);

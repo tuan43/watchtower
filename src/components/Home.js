@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
+import Nav from './Nav';
+import styles from './HomeStyles';
 
 class Home extends Component {
   constructor() {
@@ -18,12 +25,23 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Authenticated!!!</h2>
-        {this.state.authKey}
-      </div>
+      <>
+        <Nav />
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
+          {this.state.authKey}
+        </Grid>
+      </>
     );
   }
 }
 
-export default Home;
+Home.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Home);

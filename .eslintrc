@@ -14,13 +14,15 @@
   ],
   "rules": {
     "no-undef": [ 1 ],
-    "no-console": "off"
+    "no-console": "off",
+    "quotes": ["warn", "single"]
   },
   "globals": {
     "fetch": false,
     "localStorage": false,
     "Headers": false,
     "console": false,
-    "document": false
+    "document": false,
+    "setTimeout": false
   }
 }
