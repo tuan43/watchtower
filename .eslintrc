@@ -20,6 +20,7 @@
     "fetch": false,
     "localStorage": false,
     "Headers": false,
-    "console": false
+    "console": false,
+    "document": false
   }
 }
