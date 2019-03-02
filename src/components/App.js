@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
 import SignIn from './SignIn';
@@ -13,6 +14,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )} 
   />
 );
+
+PrivateRoute.propTypes = {
+  component: PropTypes.object.isRequired
+};
 
 const App = () => (
   <>

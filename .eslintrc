@@ -1,0 +1,25 @@
+{
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "no-undef": [ 1 ],
+    "no-console": "off"
+  },
+  "globals": {
+    "fetch": false,
+    "localStorage": false,
+    "Headers": false,
+    "console": false
+  }
+}
