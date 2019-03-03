@@ -2,4 +2,5 @@ git pull;
 npm install;
 cd server;
 npm install;
-sudo node server.js;
+cd server;
+echo 'sudo node server.js';
