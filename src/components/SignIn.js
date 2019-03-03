@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import moment from 'moment';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -27,10 +28,15 @@ class SignIn extends Component {
   }
 
   componentDidMount() {
-
+    if (localStorage.getItem('token')) {
+      const expiration = localStorage.getItem('expiration');
+      if (moment().isBefore(expiration)) {
+        this.props.history.push('/home');
+      }
+    }
   }
 
-  auth = (e) => {
+  auth(e) {
     e.preventDefault();
 
     const { history } = this.props;
@@ -51,9 +57,8 @@ class SignIn extends Component {
     }).then(res => res.json())
       .then(res => {
         localStorage.setItem('token', res.token);
-        setTimeout(() => {
-          history.push('/logout');
-        }, 300000);
+        localStorage.setItem('expiration', res.expiration);
+
         history.push('/home');
       })
       .catch(console.error);

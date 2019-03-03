@@ -9,6 +9,7 @@ const _ = require('lodash');
 const speakeasy = require('speakeasy');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const moment = require('moment');
 
 const jwtStrategry  = require('./jwt');
 const users = require('./users.js');
@@ -43,7 +44,9 @@ app.post('/api/login', (req, res) => {
   bcrypt.compare(password, authUser.hashedPassword, function(err, valid) {
     if (valid && (tokenVerified || bypassVerified)) {
       const token = jwt.sign({ username }, secretKey, { expiresIn: '5m' });
-      return res.status(200).json({ token });
+      const expiration = moment().add(5, 'minutes');
+      
+      return res.status(200).json({ token, expiration });
     } else {
       return res.status(401).json({ message: 'Incorrect username/password' });
     }

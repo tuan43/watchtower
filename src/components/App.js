@@ -22,8 +22,9 @@ PrivateRoute.propTypes = {
 const App = () => (
   <>
     <Route exact path='/' component={SignIn} />
-    <PrivateRoute path='/home' component={Home} />
+    <Route path='/login' component={SignIn} />
     <Route path='/logout' component={Logout} />
+    <PrivateRoute path='/home' component={Home} />
   </>
 );
 
