@@ -10,22 +10,28 @@ const speakeasy = require('speakeasy');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const moment = require('moment');
+const expressWinston = require('express-winston');
+const winston = require('winston');
 
 const jwtStrategry  = require('./jwt');
 const users = require('./users.js');
 const secretKey = require('./secretKey.js');
 
+// Express setup
 const app = express();
 app.use(helmet());
-app.use(express.static(path.join(__dirname, '../build')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(jwtStrategry);
+// Router Logic
+const router = express.Router();
+router.get('/authenticated', passport.authenticate('jwt', { session: false }), (req, res) => {
+  return res.status(200).json({ authKey: req.user.authKey });
+});
 
-app.post('/api/login', (req, res) => {
+router.post('/login', (req, res) => {
   const { username, password, token } = req.body;
 
   const authUser = _.find(users, { username });
@@ -51,21 +57,35 @@ app.post('/api/login', (req, res) => {
       return res.status(401).json({ message: 'Incorrect username/password' });
     }
   });
-})
-
-app.get('/api/authenticated', passport.authenticate('jwt', { session: false }), (req, res) => {
-  return res.status(200).json({ authKey: req.user.authKey });
 });
 
+// Logging setup
+app.use(expressWinston.logger({
+  transports: [
+    new winston.transports.File({ filename: 'combined.log' })
+  ],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json()
+  ),
+  msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}}"
+}));
+
+// Routing setup
+app.use('/api', router);
+app.use(express.static(path.join(__dirname, '../build')));
 app.get('*', (req,res) =>{
   res.sendFile(path.join(__dirname + '/../build/index.html'));
 });
 
+// Security
+passport.use(jwtStrategry);
 const httpsOptions = {
   key: fs.readFileSync('./certs/key.pem'),
   cert: fs.readFileSync('./certs/cert.pem')
 };
 
+// Start server
 const server = https.createServer(httpsOptions, app).listen(443, () => {
   console.log('Watch Tower running at ' + 443)
 });
