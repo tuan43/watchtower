@@ -1,7 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import moment from 'moment';
+import { compose } from 'recompose';
+import { withSnackbar } from 'notistack';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -39,7 +41,7 @@ class SignIn extends Component {
   auth(e) {
     e.preventDefault();
 
-    const { history } = this.props;
+    const { history, enqueueSnackbar } = this.props;
 
     fetch('/api/login', {
       method: 'POST',
@@ -49,8 +51,10 @@ class SignIn extends Component {
         'Content-Type': 'application/json'
       }
     }).then(res => {
-      if (res.ok) {
+      if (res.status === 200) {
         return res;
+      } else if (res.status === 401) {
+        enqueueSnackbar('Incorrect username/password.', { variant: 'warning' });
       } else {
         throw new Error(`Request rejected with status ${res.status}`);
       }
@@ -133,7 +137,12 @@ class SignIn extends Component {
 
 SignIn.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(withRouter(SignIn));
+export default compose(
+  withStyles(styles),
+  withRouter,
+  withSnackbar
+)(SignIn);

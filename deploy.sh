@@ -4,4 +4,4 @@ npm install;
 cd server;
 rm -rf node_modules/;
 npm install;
-echo 'sudo node server.js';
+sudo node server.js;

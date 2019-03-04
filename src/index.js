@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { SnackbarProvider } from 'notistack';
 
 import './index.css';
 import App from './components/App';
@@ -17,6 +18,8 @@ const theme = createMuiTheme({
 ReactDOM.render(
 	<BrowserRouter>
     <MuiThemeProvider theme={theme}>
-      <App />
+      <SnackbarProvider anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <App />
+      </SnackbarProvider>
     </MuiThemeProvider>
 	</BrowserRouter>, document.getElementById('root'));
