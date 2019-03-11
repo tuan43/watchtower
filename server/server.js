@@ -65,7 +65,6 @@ app.use(expressWinston.logger({
     new winston.transports.File({ filename: 'combined.log' })
   ],
   format: winston.format.combine(
-    winston.format.colorize(),
     winston.format.json()
   ),
   msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}}"
