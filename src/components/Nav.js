@@ -10,13 +10,28 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import moment from 'moment';
 
 import styles from './NavStyles';
 
 class Nav extends React.Component {
-  state = {
-    anchorEl: null
-  };
+  state = { anchorEl: null, expiration: localStorage.getItem('expiration') };
+
+  componentDidMount() {
+    this.intervalID = setInterval(() => this.tick(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
+
+  tick = () => {
+    if (moment().isAfter(this.state.expiration)) {
+      this.logoutHandler();
+    }
+
+    this.setState({ timeLeft: moment(this.state.expiration).fromNow() });
+  }
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -28,7 +43,7 @@ class Nav extends React.Component {
 
   logoutHandler = () => {
     this.props.history.push('/logout');
-    this.setState({ anchorEl: null });
+    this.handleClose();
   };
 
   render() {
@@ -40,15 +55,15 @@ class Nav extends React.Component {
       <div className={classes.root}>
         <AppBar position='static'>
           <Toolbar>
-            <Typography variant="h6" color='inherit' className={classes.grow}>
+            <Typography variant='h6' color='inherit' className={classes.grow}>
               Watch Tower
             </Typography>
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : undefined}
-                  aria-haspopup="true"
+                  aria-haspopup='true'
                   onClick={this.handleMenu}
-                  color="inherit"
+                  color='inherit'
                 >
                   <AccountCircle />
                 </IconButton>
@@ -67,6 +82,7 @@ class Nav extends React.Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.logoutHandler}>Logout</MenuItem>
+                  <MenuItem>Session ends {this.state.timeLeft}</MenuItem>
                 </Menu>
               </div>
           </Toolbar>

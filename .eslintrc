@@ -15,7 +15,8 @@
   "rules": {
     "no-undef": [ 1 ],
     "no-console": "off",
-    "quotes": ["warn", "single"]
+    "quotes": ["warn", "single"],
+    "jsx-quotes": ["warn", "prefer-single"]
   },
   "globals": {
     "fetch": false,
@@ -23,6 +24,8 @@
     "Headers": false,
     "console": false,
     "document": false,
-    "setTimeout": false
+    "setTimeout": false,
+    "setInterval": false,
+    "clearInterval": false
   }
 }

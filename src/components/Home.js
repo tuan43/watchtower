@@ -29,9 +29,9 @@ class Home extends Component {
         <Nav />
         <Grid
           container
-          direction="row"
-          justify="center"
-          alignItems="center"
+          direction='row'
+          justify='center'
+          alignItems='center'
         >
           {this.state.authKey}
         </Grid>
