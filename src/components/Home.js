@@ -33,7 +33,7 @@ class Home extends Component {
           justify='center'
           alignItems='center'
         >
-          {this.state.authKey}
+          {this.state.authKey && this.state.authKey.join()}
         </Grid>
       </>
     );

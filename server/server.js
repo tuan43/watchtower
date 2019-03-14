@@ -45,14 +45,21 @@ router.post('/login', (req, res) => {
     token: req.body.token
   });
 
-  const bypassVerified = authUser.bypass === req.body.token;
-
-  bcrypt.compare(password, authUser.hashedPassword, function(err, valid) {
-    if (valid && (tokenVerified || bypassVerified)) {
+  bcrypt.compare(password, authUser.hashedPassword, function(err, validCredentials) {
+    if (validCredentials) {
       const token = jwt.sign({ username }, secretKey, { expiresIn: '5m' });
       const expiration = moment().add(5, 'minutes');
-      
-      return res.status(200).json({ token, expiration });
+      if (tokenVerified) {
+        return res.status(200).json({ token, expiration });
+      } else {
+        bcrypt.compare(req.body.token, authUser.hashedBypass, function(err, validBypass) {
+          if (validBypass) {            
+            return res.status(200).json({ token, expiration });
+          } else {
+            return res.status(401).json({ message: 'Incorrect username/password' });
+          }
+        });
+      }
     } else {
       return res.status(401).json({ message: 'Incorrect username/password' });
     }
