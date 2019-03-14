@@ -81,8 +81,8 @@ class Nav extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.logoutHandler}>Logout</MenuItem>
                   <MenuItem>Session ends {this.state.timeLeft}</MenuItem>
+                  <MenuItem onClick={this.logoutHandler}>Logout</MenuItem>                  
                 </Menu>
               </div>
           </Toolbar>
