@@ -45,6 +45,8 @@ router.post('/login', (req, res) => {
     token: req.body.token
   });
 
+  const validResponse = 
+
   bcrypt.compare(password, authUser.hashedPassword, function(err, validCredentials) {
     if (validCredentials) {
       const token = jwt.sign({ username }, secretKey, { expiresIn: '5m' });
@@ -87,8 +89,8 @@ app.get('*', (req,res) =>{
 // Security
 passport.use(jwtStrategry);
 const httpsOptions = {
-  key: fs.readFileSync('./certs/key.pem'),
-  cert: fs.readFileSync('./certs/cert.pem')
+  key: fs.readFileSync(path.join(__dirname + '/certs/key.pem')),
+  cert: fs.readFileSync(path.join(__dirname + '/certs/cert.pem'))
 };
 
 // Start server
