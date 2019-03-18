@@ -87,13 +87,12 @@ class SignIn extends Component {
           <Typography component='h1' variant='h5'>
             Watch Tower
           </Typography>
-          <form className={classes.form} onSubmit={this.auth.bind(this)}>
+          <form className={classes.form} onSubmit={this.auth.bind(this)} autoComplete='off'>
             <FormControl margin='normal' required fullWidth>
               <InputLabel htmlFor='username'>Username</InputLabel>
               <Input 
                 id='username' 
                 name='username' 
-                autoComplete='username'
                 onChange={(e) => this.setState({ username: e.target.value })}
                 value={this.state.username}
                 autoFocus
@@ -105,7 +104,6 @@ class SignIn extends Component {
                 name='password'
                 type='password'
                 id='password'
-                autoComplete='current-password'
                 onChange={(e) => this.setState({ password: e.target.value })}
                 value={this.state.password}
               />
