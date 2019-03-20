@@ -26,7 +26,8 @@ Runs the production app from server dir
 
 JSON array in lieu of a db for now. <br/>
 Authentication works by checking if username, password AND secret/bypass is correct. <br/>
-secret is used to verify 2FA. hashedBypass is used to bypass 2FA.
+secret is used to verify 2FA. hashedBypass is used to bypass 2FA. <br/>
+
 `[{
   username: 'foo',
   id: '1228149cf9f3',
