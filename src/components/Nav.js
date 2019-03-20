@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { compose } from 'recompose';
+import { withSnackbar } from 'notistack';
 
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -28,6 +30,8 @@ class Nav extends React.Component {
   tick = () => {
     if (moment().isAfter(this.state.expiration)) {
       this.logoutHandler();
+    } else if (moment().isSame(moment(this.state.expiration).subtract(1, 'minute'), 'second')) {
+      this.props.enqueueSnackbar('The session is about to expire.', { variant: 'warning' });
     }
 
     this.setState({ timeLeft: moment(this.state.expiration).fromNow() });
@@ -94,7 +98,12 @@ class Nav extends React.Component {
 
 Nav.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(withRouter(Nav));
+export default compose(
+  withStyles(styles),
+  withRouter,
+  withSnackbar
+)(Nav);
