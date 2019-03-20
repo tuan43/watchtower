@@ -21,3 +21,14 @@ Builds the app for production to the `build` folder.
 ### `node server.js`
 
 Runs the production app from server dir
+
+### users.js
+
+`[{
+  username: 'foo',
+  id: '1228149cf9f3',
+  secret: 'abc1234567824424242',
+  hashedBypass: '$2a$04$JDxz5H4oKwbvd99yCGKizu9v9juTd.EtkI3iMRHq0eFPdRp7Bc/A2',
+  hashedPassword: '$2b$10$0kdaeo/a9T.cXEvppsl8oO6S0b3a2slHgZL.7zb3EdxCrGS3OVrLq',
+  authKey: ['1234 5678']
+}];`
