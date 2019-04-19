@@ -45,8 +45,6 @@ router.post('/login', (req, res) => {
     token: req.body.token
   });
 
-  const validResponse = 
-
   bcrypt.compare(password, authUser.hashedPassword, function(err, validCredentials) {
     if (validCredentials) {
       const token = jwt.sign({ username }, secretKey, { expiresIn: '5m' });
